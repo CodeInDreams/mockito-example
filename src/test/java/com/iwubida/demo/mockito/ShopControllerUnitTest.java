@@ -9,9 +9,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
@@ -85,6 +87,7 @@ public class ShopControllerUnitTest {
     @Test
     public void getShopCustomerStatisticsTest_validInput() {
         String result = shopController.getShopCustomerStatistics(1L, 1L);
+
         assertEquals(result, "\n\t店铺：店铺30\n\t消费者：消费者16\n\tblablabla");
         verify(customerService).getCustomerName(1L);
         verify(shopService).getShopName(anyLong());
@@ -93,9 +96,61 @@ public class ShopControllerUnitTest {
     @Test
     public void getShopCustomerStatisticsTest_mockShop() {
         doReturn("\n\t店铺：店铺30").when(shopController).getShopDesc(anyLong());
+
         String result = shopController.getShopCustomerStatistics(1L, 1L);
+
         assertEquals(result, "\n\t店铺：店铺30\n\t消费者：消费者16\n\tblablabla");
         verify(customerService).getCustomerName(1L);
         verify(shopService, never()).getShopName(anyLong());
+    }
+
+    @Test
+    public void getShopCustomerStatisticsTest_doAnswer() {
+        doAnswer(new Answer() {
+            int count = 0;
+
+            @Override
+            public Object answer(InvocationOnMock invocation) {
+                return (++count & 1) == 1 ? "店铺1" : "店铺2";
+            }
+        }).when(shopService).getShopName(anyLong());
+
+        String result = shopController.getShopCustomerStatistics(1L, 1L);
+
+        assertEquals(result, "\n\t店铺：店铺1\n\t消费者：消费者16\n\tblablabla");
+        verify(customerService).getCustomerName(1L);
+        verify(shopService).getShopName(anyLong());
+
+        result = shopController.getShopCustomerStatistics(1L, 1L);
+
+        assertEquals(result, "\n\t店铺：店铺2\n\t消费者：消费者16\n\tblablabla");
+        verify(customerService, times(2)).getCustomerName(1L);
+        verify(shopService, times(2)).getShopName(anyLong());
+    }
+
+    @Test
+    public void getShopCustomerStatisticsTest_reset() {
+        doAnswer(new Answer() {
+            int count = 0;
+
+            @Override
+            public Object answer(InvocationOnMock invocation) {
+                return (++count & 1) == 1 ? "店铺1" : "店铺2";
+            }
+        }).when(shopService).getShopName(anyLong());
+
+        String result = shopController.getShopCustomerStatistics(1L, 1L);
+
+        assertEquals(result, "\n\t店铺：店铺1\n\t消费者：消费者16\n\tblablabla");
+        verify(customerService).getCustomerName(1L);
+        verify(shopService).getShopName(anyLong());
+
+        reset(shopService);
+
+        result = shopController.getShopCustomerStatistics(1L, 1L);
+
+        assertEquals(result, "\n\t店铺：null\n\t消费者：消费者16\n\tblablabla");
+        verify(customerService, times(2)).getCustomerName(1L);
+        verify(shopService).getShopName(anyLong());
     }
 }
