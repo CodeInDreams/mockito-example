@@ -88,20 +88,20 @@ public class ShopControllerUnitTest {
     public void getShopCustomerStatisticsTest_validInput() {
         String result = shopController.getShopCustomerStatistics(1L, 1L);
 
-        assertEquals(result, "\n\t店铺：店铺30\n\t消费者：消费者16\n\tblablabla");
+        assertEquals("\n\t店铺：店铺30\n\t消费者：消费者16\n\tblablabla", result);
         verify(customerService).getCustomerName(1L);
         verify(shopService).getShopName(anyLong());
     }
 
     @Test
     public void getShopCustomerStatisticsTest_mockShop() {
-        doReturn("\n\t店铺：店铺30").when(shopController).getShopDesc(anyLong());
+        doReturn("店铺30").when(shopService).getShopName(anyLong());
 
         String result = shopController.getShopCustomerStatistics(1L, 1L);
 
-        assertEquals(result, "\n\t店铺：店铺30\n\t消费者：消费者16\n\tblablabla");
+        assertEquals("\n\t店铺：店铺30\n\t消费者：消费者16\n\tblablabla", result);
         verify(customerService).getCustomerName(1L);
-        verify(shopService, never()).getShopName(anyLong());
+        verify(shopService).getShopName(anyLong());
     }
 
     @Test
@@ -117,13 +117,13 @@ public class ShopControllerUnitTest {
 
         String result = shopController.getShopCustomerStatistics(1L, 1L);
 
-        assertEquals(result, "\n\t店铺：店铺1\n\t消费者：消费者16\n\tblablabla");
+        assertEquals("\n\t店铺：店铺1\n\t消费者：消费者16\n\tblablabla", result);
         verify(customerService).getCustomerName(1L);
         verify(shopService).getShopName(anyLong());
 
         result = shopController.getShopCustomerStatistics(1L, 1L);
 
-        assertEquals(result, "\n\t店铺：店铺2\n\t消费者：消费者16\n\tblablabla");
+        assertEquals("\n\t店铺：店铺2\n\t消费者：消费者16\n\tblablabla", result);
         verify(customerService, times(2)).getCustomerName(1L);
         verify(shopService, times(2)).getShopName(anyLong());
     }
@@ -141,7 +141,7 @@ public class ShopControllerUnitTest {
 
         String result = shopController.getShopCustomerStatistics(1L, 1L);
 
-        assertEquals(result, "\n\t店铺：店铺1\n\t消费者：消费者16\n\tblablabla");
+        assertEquals("\n\t店铺：店铺1\n\t消费者：消费者16\n\tblablabla", result);
         verify(customerService).getCustomerName(1L);
         verify(shopService).getShopName(anyLong());
 
@@ -149,7 +149,7 @@ public class ShopControllerUnitTest {
 
         result = shopController.getShopCustomerStatistics(1L, 1L);
 
-        assertEquals(result, "\n\t店铺：null\n\t消费者：消费者16\n\tblablabla");
+        assertEquals("\n\t店铺：null\n\t消费者：消费者16\n\tblablabla", result);
         verify(customerService, times(2)).getCustomerName(1L);
         verify(shopService).getShopName(anyLong());
     }

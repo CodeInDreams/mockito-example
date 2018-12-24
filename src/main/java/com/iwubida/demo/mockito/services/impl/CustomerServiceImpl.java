@@ -1,6 +1,8 @@
 package com.iwubida.demo.mockito.services.impl;
 
+import com.iwubida.demo.mockito.repositories.CustomerBaseService;
 import com.iwubida.demo.mockito.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,8 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    @Autowired
+    private CustomerBaseService customerBaseService;
+
     @Override
     public String getCustomerName(Long customerId) {
-        return "消费者" + customerId;
+        return customerBaseService.callRepository(customerId);
     }
 }

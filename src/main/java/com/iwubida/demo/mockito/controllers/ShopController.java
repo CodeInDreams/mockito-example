@@ -33,35 +33,8 @@ public class ShopController {
      */
     @GetMapping("statistics/{shopId}/{customerId}")
     public String getShopCustomerStatistics(@PathVariable("shopId") Long shopId, @PathVariable("customerId") Long customerId) {
-        return this.getShopDesc(shopId) + this.getCustomerDesc(customerId) + this.getOtherDesc();
-    }
-
-    /**
-     * 获取店铺描述
-     *
-     * @param shopId 店铺id
-     * @return 店铺描述
-     */
-    public String getShopDesc(Long shopId) {
-        return "\n\t店铺：" + shopService.getShopName(shopId);
-    }
-
-    /**
-     * 获取消费者描述
-     *
-     * @param customerId 消费者id
-     * @return 消费者描述
-     */
-    public String getCustomerDesc(Long customerId) {
-        return "\n\t消费者：" + customerService.getCustomerName(customerId);
-    }
-
-    /**
-     * 获取其他描述
-     *
-     * @return 其他描述
-     */
-    public String getOtherDesc() {
-        return "\n\tblablabla";
+        return "\n\t店铺：" + shopService.getShopName(shopId)
+                + "\n\t消费者：" + customerService.getCustomerName(customerId)
+                + "\n\tblablabla";
     }
 }

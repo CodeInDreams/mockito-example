@@ -1,6 +1,8 @@
 package com.iwubida.demo.mockito.services.impl;
 
+import com.iwubida.demo.mockito.repositories.ShopBaseService;
 import com.iwubida.demo.mockito.services.ShopService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,8 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShopServiceImpl implements ShopService {
 
+    @Autowired
+    private ShopBaseService shopBaseService;
+
     @Override
     public String getShopName(Long shopId) {
-        return "店铺" + shopId;
+        return shopBaseService.callRepository(shopId);
     }
 }
