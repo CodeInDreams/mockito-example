@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Controller单元测试，不使用Spring容器
+ * <p>可以使用内部类或者继承的方式，复用配置
  *
  * @author Zhang Yanhui
  * @date 2018/12/24 10:38
@@ -95,11 +96,11 @@ public class ShopControllerUnitTest {
 
     @Test
     public void getShopCustomerStatisticsTest_mockShop() {
-        doReturn("店铺30").when(shopService).getShopName(anyLong());
+        doReturn("店铺3").when(shopService).getShopName(anyLong());
 
-        String result = shopController.getShopCustomerStatistics(1L, 1L);
+        String result = shopController.getShopCustomerStatistics(2L, 1L);
 
-        assertEquals("\n\t店铺：店铺30\n\t消费者：消费者16\n\tblablabla", result);
+        assertEquals("\n\t店铺：店铺3\n\t消费者：消费者16\n\tblablabla", result);
         verify(customerService).getCustomerName(1L);
         verify(shopService).getShopName(anyLong());
     }

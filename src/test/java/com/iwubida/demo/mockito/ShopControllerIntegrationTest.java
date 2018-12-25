@@ -17,10 +17,10 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
- * Controller单元测试，不使用Spring容器
+ * Controller集成测试，使用Spring容器
  *
  * @author Zhang Yanhui
- * @date 2018/12/24 10:38
+ * @date 2018/12/24 17:52
  */
 
 @Slf4j
